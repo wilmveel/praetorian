@@ -1,0 +1,21 @@
+{
+  "name": "praetorian-manager",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Willem Veelenturf <willem.veelenturf@gmail.com>"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "paper-elements": "PolymerElements/paper-elements#~1.0.7"
+  }
+}

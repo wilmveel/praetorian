@@ -1,0 +1,24 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./paper-button/paper-button.html">
+<link rel="import" href="./paper-input/paper-input.html">
+
+<dom-module id="praetorian-app">
+
+    <template>
+        <paper-input id="input" label="Factory address" value="{{test}}"></paper-input>
+        <paper-button id="button" raised on-tap="setFactory">Click</paper-button>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'praetorian-app',
+            ready: function () {
+                this.$.input.value = sessionStorage.getItem('factory')
+            },
+            setFactory: function(){
+                sessionStorage.setItem('factory', this.$.input.value);
+            }
+        });
+    </script>
+
+</dom-module>
