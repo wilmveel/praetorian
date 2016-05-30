@@ -1,0 +1,50 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./paper-item/paper-item.html">
+<link rel="import" href="./paper-listbox/paper-listbox.html">
+<link rel="import" href="./paper-button/paper-button.html">
+<link rel="import" href="./paper-input/paper-input.html">
+
+<dom-module id="praetorian-party">
+
+    <template>
+        <paper-listbox>
+
+            <paper-item class="fancy">Starred</paper-item>
+            <paper-item class="fancy">Sent mail</paper-item>
+
+            <template repeat="{{item | getList}}">
+                <paper-item>{{item}}</paper-item>
+            </template>
+
+        </paper-listbox>
+        <paper-input id="input" label="Factory address" value="{{test}}"></paper-input>
+        <paper-button id="button" raised on-tap="setFactory">Click</paper-button>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'praetorian-party',
+            ready: function () {
+                document.addEventListener("praetorianReady", function () {
+                    console.log("DOM fully loaded and parsed");
+                    console.log('praetorian', praetorian);
+
+                    praetorian.services.partyService.list(function (err, list) {
+                        console.log('list', list);
+                    });
+
+                    praetorian.services.partyService.create(function (err, party) {
+                        console.log('party', party);
+                        praetorian.services.partyService.list(function (err, list) {
+                            console.log('list', list);
+                        });
+                    });
+                });
+            },
+            getList: function(){
+                return ['One', 'Two']
+            }
+        });
+    </script>
+
+</dom-module>

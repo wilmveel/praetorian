@@ -6,14 +6,36 @@
 
     <script src="webcomponentsjs/webcomponents-lite.js"></script>
 
+    <link rel="import" href="../iron-list/iron-list.html">
+    <link rel="import" href="../paper-card/paper-card.html">
+
     <link rel="import" href="./praetorian-app.html">
+    <link rel="import" href="./praetorian-party.html">
 
 </head>
 <body>
 
-<section>
-<praetorian-app></praetorian-app>
-</section>
+
+
+    <paper-card heading="Card Title">
+        <div class="card-content">
+            <praetorian-app></praetorian-app>
+        </div>
+        <div class="card-actions">
+            <paper-button>Some action</paper-button>
+        </div>
+    </paper-card>
+
+    <paper-card heading="Card Title">
+        <div class="card-content">
+            <praetorian-party></praetorian-party>
+        </div>
+        <div class="card-actions">
+            <paper-button>Some action</paper-button>
+        </div>
+    </paper-card>
+
+
 
 
 <script src="/bundle.js"></script>
