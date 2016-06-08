@@ -1,0 +1,40 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./paper-button/paper-button.html">
+<link rel="import" href="./paper-input/paper-input.html">
+
+<dom-module id="praetorian-factory">
+
+    <template>
+
+        <iron-overlay-backdrop id="overlay" class="horizontal layout center">
+            <paper-spinner class="flex" active></paper-spinner>
+        </iron-overlay-backdrop>
+
+        <paper-input id="input" label="Factory address" value="{{test}}"></paper-input>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'praetorian-factory',
+
+            ready: function () {
+                this.$.input.value = sessionStorage.getItem('factory')
+            },
+            bind: function () {
+                sessionStorage.setItem('factory', this.$.input.value);
+            },
+            create: function () {
+                this.$.overlay.open();
+                praetorian.factory.init(null, function (err, app) {
+                    if (err) return console.error(err)
+                    this.$.input.value = app.address;
+                    sessionStorage.setItem('factory', app.address);
+                    this.$.overlay.close();
+                    location.reload();
+                }.bind(this));
+            }
+        });
+    </script>
+
+</dom-module>

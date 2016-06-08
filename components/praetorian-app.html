@@ -1,22 +1,76 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="./paper-button/paper-button.html">
-<link rel="import" href="./paper-input/paper-input.html">
+
+<link rel="import" href="./paper-card/paper-card.html">
+
+<link rel="import" href="./praetorian-factory.html">
+<link rel="import" href="./praetorian-party.html">
+<link rel="import" href="./praetorian-challenge.html">
+<link rel="import" href="./praetorian-level.html">
+
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
 
 <dom-module id="praetorian-app">
 
+    <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
+
     <template>
-        <paper-input id="input" label="Factory address" value="{{test}}"></paper-input>
-        <paper-button id="button" raised on-tap="setFactory">Click</paper-button>
+        <div class="layout horizontal">
+
+            <paper-card class="flex" heading="Factory">
+                <div class="card-content">
+                    <praetorian-factory id="praetorianFactory"></praetorian-factory>
+                </div>
+                <div class="card-actions">
+                    <paper-button on-tap="factoryBind">Bind</paper-button>
+                    <paper-button on-tap="factoryCreate">Create</paper-button>
+                </div>
+            </paper-card>
+
+            <paper-card class="flex" heading="Parties">
+                <div class="card-content">
+                    <praetorian-party id="praetorianParty" create="createParty"></praetorian-party>
+                </div>
+                <div class="card-actions">
+                    <paper-button on-tap="partyCreate">Create</paper-button>
+                </div>
+            </paper-card>
+
+            <paper-card class="flex" heading="Challenges">
+                <div class="card-content">
+                    <praetorian-challenge id="praetorianChallenge"></praetorian-challenge>
+                </div>
+            </paper-card>
+
+            <paper-card class="flex" heading="Levels">
+                <div class="card-content">
+                    <praetorian-level id="praetorianLevel"></praetorian-level>
+                </div>
+                <div class="card-actions">
+                    <paper-button on-tap="levelCreate">Create</paper-button>
+                </div>
+            </paper-card>
+
+        </div>
     </template>
 
     <script>
         Polymer({
             is: 'praetorian-app',
-            ready: function () {
-                this.$.input.value = sessionStorage.getItem('factory')
+
+            partyCreate: function () {
+                this.$.praetorianParty.create();
             },
-            setFactory: function(){
-                sessionStorage.setItem('factory', this.$.input.value);
+
+            levelCreate: function () {
+                this.$.praetorianLevel.create();
+            },
+
+            factoryBind: function () {
+                this.$.praetorianFactory.bind();
+            },
+
+            factoryCreate: function () {
+                this.$.praetorianFactory.create();
             }
         });
     </script>

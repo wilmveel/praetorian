@@ -11,7 +11,7 @@
 <link rel="import" href="../iron-overlay-behavior/iron-overlay-backdrop.html">
 <link rel="import" href="../iron-overlay-behavior/iron-overlay-backdrop.html">
 
-<dom-module id="praetorian-party">
+<dom-module id="praetorian-challenge">
 
     <template>
 
@@ -20,21 +20,15 @@
         </iron-overlay-backdrop>
 
         <iron-pages id="pages" selected="0">
-            <section id="list">
+            <section>
                 <paper-listbox>
                     <template is="dom-repeat" items="{{list}}">
-                        <paper-item on-click="select">
-                            <span>{{item.name}} - </span><em>{{item.address}}</em></paper-item>
+                        <paper-item on-click="select">{{item}}</paper-item>
                     </template>
                 </paper-listbox>
             </section>
-            <section id="detail">
-                <div>{{item}}</div>
-            </section>
-            <section id="create">
-                <form is="iron-form" id="form">
-                    <paper-input id="levelName" name="name" label="name" value="{{item.name}}"></paper-input>
-                </form>
+            <section>
+                <h1>{{item}}</h1>
             </section>
         </iron-pages>
 
@@ -43,7 +37,7 @@
 
     <script>
         Polymer({
-            is: 'praetorian-party',
+            is: 'praetorian-challenge',
 
             /** List of parties */
             list: [],
@@ -54,47 +48,30 @@
             ready: function () {
 
                 document.addEventListener("praetorianReady", function () {
-                    this._loadList();
-                }.bind(this));
-            },
+                    console.log("DOM fully loaded and parsed");
+                    console.log('praetorian', praetorian);
 
-            _loadList: function () {
-                this.list = [];
-                praetorian.services.partyService.list(function (err, list) {
-                    console.log("list", list);
-                    this.list = list;
-                    list.forEach(function (x, i) {
-                        praetorian.services.partyService.get(x, function (err, item) {
-                            item.address = x;
-                            console.log(item, i);
-                            this.set('list.' + i, item);
-                        }.bind(this));
+                    this.list = [];
+
+                    praetorian.services.challengeService.list(function (err, list) {
+                        console.log("list", list);
+                        this.list = list;
                     }.bind(this));
+
+
                 }.bind(this));
             },
 
             /** Create new party */
             create: function () {
                 console.log("Create");
-                if (this.$.pages.selected == 0) {
-                    this.$.pages.select(2);
-                    this.item = {
-                        name: null
-                    }
-                }
-
-                else if (this.$.pages.selected == 2) {
-                    this.$.overlay.open();
-                    praetorian.services.partyService.create(this.item.name, function (err, party) {
-                        if(err){
-                            console.log(err)
-                        }
-                        this._loadList();
+                this.$.overlay.open();
+                praetorian.services.partyService.create(function (err, party) {
+                    praetorian.services.partyService.list(function (err, list) {
+                        this.list = list;
                         this.$.overlay.close();
-                        this.$.pages.select(0)
                     }.bind(this));
-                }
-
+                }.bind(this));
             },
 
             /** Select party */

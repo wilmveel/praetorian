@@ -3,15 +3,18 @@
 <link rel="import" href="./paper-item/paper-item.html">
 <link rel="import" href="./paper-spinner/paper-spinner.html">
 <link rel="import" href="./paper-listbox/paper-listbox.html">
+<link rel="import" href="./paper-checkbox/paper-checkbox.html">
 <link rel="import" href="./paper-button/paper-button.html">
 <link rel="import" href="./paper-input/paper-input.html">
 
+<link rel="import" href="./iron-form/iron-form.html">
 <link rel="import" href="./iron-pages/iron-pages.html">
+<link rel="import" href="./iron-selector/iron-selector.html">
 
 <link rel="import" href="../iron-overlay-behavior/iron-overlay-backdrop.html">
 <link rel="import" href="../iron-overlay-behavior/iron-overlay-backdrop.html">
 
-<dom-module id="praetorian-party">
+<dom-module id="praetorian-level">
 
     <template>
 
@@ -23,17 +26,20 @@
             <section id="list">
                 <paper-listbox>
                     <template is="dom-repeat" items="{{list}}">
-                        <paper-item on-click="select">
-                            <span>{{item.name}} - </span><em>{{item.address}}</em></paper-item>
+                        <paper-item on-click="select">{{item.name}}</paper-item>
                     </template>
                 </paper-listbox>
-            </section>
-            <section id="detail">
-                <div>{{item}}</div>
             </section>
             <section id="create">
                 <form is="iron-form" id="form">
                     <paper-input id="levelName" name="name" label="name" value="{{item.name}}"></paper-input>
+                    <paper-listbox>
+                        <template id="challengeList" is="dom-repeat" items="{{challenges}}">
+                            <paper-item>
+                                <paper-checkbox on-change="toggleSelection">{{item}}</paper-checkbox>
+                            </paper-item>
+                        </template>
+                    </paper-listbox>
                 </form>
             </section>
         </iron-pages>
@@ -43,61 +49,74 @@
 
     <script>
         Polymer({
-            is: 'praetorian-party',
+            is: 'praetorian-level',
 
-            /** List of parties */
+            /** List of levels */
             list: [],
 
-            /** Selected party */
+            /** List of challenges */
+            challenges: [],
+
+            /** Selected level */
             item: null,
 
             ready: function () {
 
                 document.addEventListener("praetorianReady", function () {
-                    this._loadList();
+
+                    this._loadLevels();
+                    this._loadChallenges();
+
                 }.bind(this));
             },
 
-            _loadList: function () {
+            _loadLevels: function(){
                 this.list = [];
-                praetorian.services.partyService.list(function (err, list) {
+                praetorian.services.levelService.list(function (err, list) {
                     console.log("list", list);
                     this.list = list;
                     list.forEach(function (x, i) {
-                        praetorian.services.partyService.get(x, function (err, item) {
+                        praetorian.services.levelService.get(x, function (err, item) {
                             item.address = x;
                             console.log(item, i);
                             this.set('list.' + i, item);
                         }.bind(this));
                     }.bind(this));
                 }.bind(this));
+
             },
 
-            /** Create new party */
-            create: function () {
-                console.log("Create");
-                if (this.$.pages.selected == 0) {
-                    this.$.pages.select(2);
-                    this.item = {
-                        name: null
-                    }
-                }
+            _loadChallenges: function(){
+                this.challenges = [];
+                praetorian.services.challengeService.list(function (err, challenges) {
+                    console.log("challenges", challenges, this.item);
+                    this.challenges = challenges;
+                }.bind(this));
 
-                else if (this.$.pages.selected == 2) {
+            },
+
+            /** Create new level */
+            create: function () {
+                console.log("Create", this.$.pages.selected);
+                if (this.$.pages.selected == 0) {
+                    this.$.pages.select(1);
+                    this.item = {
+                        name: null,
+                        challenges: []
+                    }
+                } else {
+                    console.log("Create", this.item);
                     this.$.overlay.open();
-                    praetorian.services.partyService.create(this.item.name, function (err, party) {
-                        if(err){
-                            console.log(err)
-                        }
-                        this._loadList();
+                    praetorian.services.levelService.create(this.item.name, this.item.challenges, function (err, item) {
+                        if(err) console.error(err);
                         this.$.overlay.close();
-                        this.$.pages.select(0)
+                        this._loadLevels();
+                        this.$.pages.select(0);
                     }.bind(this));
                 }
-
             },
 
-            /** Select party */
+            /** Select level */
             select: function (e) {
                 console.log("select", e);
                 this.item = e.model.item;
@@ -105,9 +124,21 @@
 
             },
 
-            /** Select party */
+            /** Select level */
             back: function (e) {
                 this.$.pages.selectPrevious();
+
+            },
+
+            toggleSelection: function (e) {
+                var item = this.$.challengeList.itemForElement(e.target);
+                console.log(this.item)
+                if (e.target.checked) {
+                    this.item.challenges.push(item)
+                } else {
+                    var index = this.item.indexOf(item);
+                    this.item.challenges.splice(index, 1);
+                }
 
             }
 
