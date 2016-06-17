@@ -1,4 +1,6 @@
 var express = require('express');
+var bodyParser = require('body-parser');
+
 var app = express();
 
 var webpackDevMiddleware = require("webpack-dev-middleware");
@@ -13,12 +15,15 @@ app.use(express.static('bower_components'));
 
 var proxy = require('express-http-proxy');
 
+app.use('/web3', function(req, res, next){
 
-app.use('/web3', proxy('128.199.53.68:8545', {
-    forwardPath: function(req, res) {
-        return require('url').parse(req.url).path;
-    }
-}));
+    proxy('128.199.53.68:8545', {
+        forwardPath: function(req, res) {
+            return require('url').parse(req.url).path;
+        }
+    })(req, res, next)
+
+});
 
 var port = process.env.PORT || 3000;
 app.listen(port, function () {

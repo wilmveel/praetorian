@@ -19,11 +19,11 @@ module.exports = function (privateKey) {
             var tx = new ethereumjsTx(tx_params);
             tx.sign(privateKey);
 
-            var senderAddress = ethereumjsUtil.bufferToHex(tx.getSenderAddress());
-
             var buffer = new Buffer(tx.serialize());
-            console.log(buffer.toString('hex'));
             var signedTx = ethereumjsUtil.bufferToHex(buffer);
+
+            var event = new CustomEvent('web3', {detail: tx_params});
+            document.dispatchEvent(event);
 
             callback(null, ethereumjsUtil.stripHexPrefix(signedTx));
         }

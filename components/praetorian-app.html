@@ -57,6 +57,12 @@
         Polymer({
             is: 'praetorian-app',
 
+            ready: function (){
+                document.addEventListener('web3', function (e) {
+                    console.log(e); // true
+                })
+            },
+
             partyCreate: function () {
                 this.$.praetorianParty.create();
             },

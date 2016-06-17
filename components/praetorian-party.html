@@ -29,11 +29,17 @@
                 </paper-listbox>
             </section>
             <section id="detail">
-                <div>{{item}}</div>
+                <div>{{item.name}}</div>
+                <paper-button on-tap="addChallenge">AddChallenge</paper-button>
             </section>
             <section id="create">
-                <form is="iron-form" id="form">
-                    <paper-input id="levelName" name="name" label="name" value="{{item.name}}"></paper-input>
+                <form is="iron-form">
+                    <paper-input id="partyName" name="name" label="name" value="{{item.name}}"></paper-input>
+                </form>
+            </section>
+            <section id="passwordChallenge">
+                <form is="iron-form">
+                    <paper-input id="challenge" name="name" label="name" value="{{challenge.password}}"></paper-input>
                 </form>
             </section>
         </iron-pages>
@@ -52,7 +58,6 @@
             item: null,
 
             ready: function () {
-
                 document.addEventListener("praetorianReady", function () {
                     this._loadList();
                 }.bind(this));
@@ -103,6 +108,14 @@
                 this.item = e.model.item;
                 this.$.pages.selectNext();
 
+            },
+
+            addChallenge:function(){
+                this.$.overlay.open();
+                praetorian.services.challengeService.create('test', function (err, list) {
+                    this.$.overlay.close();
+
+                }.bind(this));
             },
 
             /** Select party */
