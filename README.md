@@ -15,10 +15,10 @@ In this manner private keys can be stored on devices making their storage as sec
 We believe that our invention will inevitably lead to a transparent internet and world peace.
 
 ## Digital proof of identity
-I the current world there are different ways to digital identify your self. Some means of authentication are stronger than others. By making combinations the level of authentication can be increased. But as stated above it is very hard to know for certain that someone is who they say they are. Below different ways to authenticate means are explained how they technicaly proof that you are you say you are.
+In the current world there are different ways to digital identify your self. Some means of authentication are stronger than others. By making combinations of different means the level of authentication can be increased. But as stated above it is very hard to know for certain that someone is who they say they are. Below different ways to authenticate means are explained how they technicaly proof that you are you say you are.
 
 ### Password Proof
-The proof assumes that you are the only person that knows a certain combination of characters. This string is stored into a data store and compared at the moment the person authenticates. When the result matches the proof is successful.
+The proof assumes that you are the only person that knows a certain combination of characters. This string is stored into a data store and compared at the moment of authentication. When the result matches the proof is successful.
 
 ### Oauth Proof
 With the oauth proof you show that you have an account at an other service provider. Without sharing your credentials with the third party you make sure you are the owner of an account. This relays on the fact that the provider will only redirect you to a certain domain when you successfully authenticate yourself.
