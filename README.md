@@ -24,7 +24,7 @@ The proof assumes that you are the only person that knows a certain combination 
 With the oauth proof you show that you have an account at an other service provider. Without sharing your credentials with the third party you make sure you are the owner of an account. This relays on the fact that the provider will only redirect you to a certain domain when you successfully authenticate yourself.
 
 ### Email Proof
-In the email proof you show you are the one that has access to an certain mailbox. The provider sends an email with a link. When you open the link you proof that you have access to this mailbox.
+In the email proof a user shows show to have access to an certain mailbox. The provider sends an email with a link. When the link is opened it proofs that the user has access to this mailbox.
 
 ### Biometric proof
 The biometric proof measures characteristics of the human body and stores this as a profile in a data store. Metrics are measured with a device. During authentication the same profile will be created and compared with the profile in the datastore. When ther is a match the authentication was successful.
