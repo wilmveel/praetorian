@@ -28,18 +28,18 @@ describe('index', function () {
         });
     });
 
-    xit('should create two party contracts', function (done) {
+    it('should create two party contracts', function (done) {
 
-        async.parallel({
-                one: function (callback) {
-                    service.create(callback);
+        async.parallel([
+                function (callback) {
+                    service.create('name 1', callback);
                 },
-                two: function (callback) {
-                    service.create(callback);
+                function (callback) {
+                    service.create('name2', callback);
                 }
-            },
+            ],
             function (err, results) {
-                assert.notEqual(results.one, results.two);
+                assert.notEqual(results[0], results[1]);
                 done();
             });
 
